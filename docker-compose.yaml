@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  ueransim:
+    privileged: true
+    build: ./config
+    image: docker_ueransim
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./config:/mnt/ueransim
+    expose:
+      - "38412/sctp"
+      - "2152/udp"
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks: 
+      ueransim_vlan:
+        
+    environment:
+      - MCC=${MCC}
+      - MNC=${MNC}
+      - UE_KEY=${UE_KEY}
+      - UE_OP=${UE_OP}
+      - UE_AMF_AUTH=${UE_AMF_AUTH}
+      - UE_IMEI=${UE_IMEI}
+      - UE_IMSI=${UE_IMSI}
+      - UE_DNN_NAME=${UE_DNN_NAME}
+      - GNB_AMF_IP=${GNB_AMF_IP}
+      - TAC=${TAC}
+      - NSSAI_SST=${NSSAI_SST}
+      - NSSAI_SD=${NSSAI_SD}
+      - APN_NAME=${APN_NAME}
+  
+networks:
+  ueransim_vlan:
+    driver: macvlan
+    driver_opts:
+      parent: eno1
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.1/24
+          gateway: 10.0.0.1
+          ip_range: 10.0.0.0/16
+          aux_addresses:
+            amf_ip: 10.0.0.10
+            blocked_address1: 10.0.0.2
+            blocked_address2: 10.0.0.3
