@@ -4,7 +4,7 @@ NumberOfGNBInstances=1
 NumberOfUEInstances=1
 UEsCreatedAtTheSameTime=1
 UE_IMSI=001590001230010
-ContainerName=5gransimulation_ueransim_
+ContainerName=ueransim_docker_ueransim_
 
 
 for ((i=1;i<=NumberOfGNBInstances;i++));
